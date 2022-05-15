@@ -10,7 +10,7 @@
     device: /dev/{{ item }}
     label: gpt
     number: 1
-    name: "bios_boot_{{ idx }}"
+    name: "bios_boot{{ idx }}"
     flags: [ "{{ parted_flag|default('raid') }}" ]
     part_end: 1M
   loop: "{{ raid_block_devs }}"
