@@ -12,7 +12,7 @@
     number: 1
     name: "bios_boot{{ idx }}"
     flags: [ "{{ parted_flag|default('raid') }}" ]
-    part_end: 1M
+    part_end: 1MiB
   loop: "{{ raid_block_devs }}"
   loop_control:
     index_var: idx
@@ -25,7 +25,7 @@
     number: 1
     name: "{{ raid_name }}_member{{ idx }}"
     flags: [ "{{ parted_flag|default('raid') }}" ]
-    part_start: 1M
+    part_start: 1MiB
     part_end: 98%
   loop: "{{ raid_block_devs }}"
   loop_control:
