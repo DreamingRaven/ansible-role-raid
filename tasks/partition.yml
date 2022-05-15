@@ -4,14 +4,29 @@
     parted_flag: lvm
   when: raid_backend == 'lvmraid'
 
-- name: Partition block devices
-  parted:
+- name: Partition bios-boot
+  community.general.parted:
+    state: present
+    device: /dev/{{ item }}
+    label: gpt
+    number: 1
+    name: "bios_boot_{{ idx }}"
+    flags: [ "{{ parted_flag|default('raid') }}" ]
+    part_end: 1M
+  loop: "{{ raid_block_devs }}"
+  loop_control:
+    index_var: idx
+
+- name: Partition raid
+  community.general.parted:
     state: present
     device: /dev/{{ item }}
     label: gpt
     number: 1
     name: "{{ raid_name }}_member{{ idx }}"
     flags: [ "{{ parted_flag|default('raid') }}" ]
+    part_start: 1M
+    part_end: 98%
   loop: "{{ raid_block_devs }}"
   loop_control:
     index_var: idx
